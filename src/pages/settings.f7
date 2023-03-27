@@ -1,0 +1,280 @@
+<template>
+    <div class="page sc_settings" data-name="settings">
+        <div class="navbar no-shadow phone-only">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link panel-open" data-panel=".navigation-drawer">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Nastavení
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Nastavení
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block">
+                <div class="tablet-only">
+                    <div class="header text-align-center">
+                        <h1 class="header-title}">Nastavení</h1>
+                    </div>
+                </div>
+                <div class="margin-bottom font-size-select">
+                    <h2>Velikost písma</h2>
+                    <p>Zvol si velikost písma, která ti vyhovuje.</p>
+                    <div class="settings_font">
+                        <div id="settings_font_1"
+                            class="button button-fill button-square button-inline button-default-dark fs-btn-1"
+                            @click="${() => fontSizeChange(1)}">1</div>
+                        <div id="settings_font_2"
+                            class="button button-fill button-square button-inline button-default-dark fs-btn-2"
+                            @click="${() => fontSizeChange(2)}">2</div>
+                        <div id="settings_font_3"
+                            class="button button-fill button-square button-inline button-default-dark fs-btn-3"
+                            @click="${() => fontSizeChange(3)}">3</div>
+                    </div>
+                </div>
+                <div id="module_settings" class="display-flex justify-content-center margin-top">
+                    <div class="user-form row">
+                        <h2 class="margin-bottom col-100">Kdo jste?</h2>
+                        <form class="list inline-labels no-hairlines-md col-100 margin-bottom"
+                            id="module_settings_form">
+                            <!-- Class form-store-data keeps data in form after reloading page  -->
+                            <ul>
+                                <li class="item-content item-input item-input-outline">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Jméno:</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="username" id="module_settings_name_input"
+                                                placeholder="Jméno, nebo přezdívka" value="${username}" required />
+                                            <span class="input-clear-button"></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content margin-top">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label display-flex age-label no-padding">
+                                            <div class="align-self-center">
+                                                Chodím na:
+                                            </div>
+                                        </div>
+                                        <div class="item-input-wrap no-margin age-choice">
+                                            <ul class="no-padding row">
+                                                <li class="col radio-age">
+                                                    <div class="row">
+                                                        <div class="col-100 item-title">ZŠ</div>
+                                                        <div class="col-100 display-flex justify-content-center">
+                                                            <label
+                                                                class="item-radio item-radio-icon-start item-content">
+                                                                <input type="radio" name="age" value="1" />
+                                                                <i class="icon icon-radio no-margin"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="col radio-age">
+                                                    <div class="row">
+                                                        <div class="col-100 item-title">SŠ</div>
+                                                        <div class="col-100 display-flex justify-content-center">
+                                                            <label
+                                                                class="item-radio item-radio-icon-start item-content">
+                                                                <input type="radio" name="age" value="2" />
+                                                                <i class="icon icon-radio no-margin"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="col radio-age">
+                                                    <div class="row">
+                                                        <div class="col-100 item-title">Jiné</div>
+                                                        <div class="col-100 display-flex justify-content-center">
+                                                            <label
+                                                                class="item-radio item-radio-icon-start item-content">
+                                                                <input type="radio" name="age" value="3" />
+                                                                <i class="icon icon-radio no-margin"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+                <a href="#"
+                    class="col-100 button button-fill button-large button-center button-default-dark margin-top module_settings_save_btn"
+                    @click="${save}">
+                    Uložit nastavení
+                </a>
+                <h2 class="margin-top">Tvá data</h2>
+                <p class="col-100">Ulož si všechna svá data na účet Microsoft</p>
+                <a href="#"
+                    class="col-100 button button-fill button-large button-center button-default-light button-icon button-ms"
+                    @click="${saveToMS}">
+                    <span class="button-media hide-fs-2 hide-fs-3">
+                        <img id="MSLogo" src="/static/images/ms-logo.svg" class="hide-fs-2 hide-fs-3" />
+                    </span>
+                    <span class="button-text">
+                        Uložit na <span class="hide-fs-3">účet</span> Microsoft
+                    </span>
+                </a>               
+                <a href="#"
+                    class="col-100 button button-fill button-large button-center button-default-dark button-icon button-ms margin-top"
+                    @click="${$f7.logout}">
+                    <span class="button-media hide-fs-2 hide-fs-3">
+                        <i class="fas fa-trash"></i>
+                    </span>
+                    <span class="button-text">
+                        Smazat
+                    </span>
+                </a>
+                <p class="col-100">Smaž všechna svá data ze zařízení</p>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $, $f7, $f7router, $store, $update, $on }) => {
+        let fontSize = $store.getters.fontSize.value;
+        let ageToast, nameToast, successToast;
+        let username = $store.getters.user.value;
+        let userAge = $store.getters.userAge.value;
+
+        const fontSizeChange = (size) => {
+            $store.dispatch('setFontSize', { size: size });
+            fontSize = size;
+            $(`.settings_font .selected`).removeClass('selected');
+            $(`#settings_font_${fontSize}`).addClass('selected');
+        }
+
+        const showAgeToast = () => {
+            if (!ageToast) {
+                ageToast = $f7.toast.create({
+                    text: 'Vyber si prosím školu, na kterou chodíš. Pokud již do školy nechodíš, zvol možnost Jiné.',
+                    closeTimeout: 3000,
+                    horizontalPosition: 'center',
+                });
+            }
+            ageToast.open();
+        }
+
+        const showNameToast = () => {
+            if (!nameToast) {
+                nameToast = $f7.toast.create({
+                    text: 'Zadej prosím své jméno, nebo přezdívku.',
+                    closeTimeout: 3000,
+                    position: 'center',
+                    horizontalPosition: 'center',
+                });
+            }
+            nameToast.open();
+        }
+
+        const showSuccessToast = () => {
+            if (!successToast) {
+                successToast = $f7.toast.create({
+                    text: 'Nastavení bylo úspěšně uloženo.',
+                    horizontalPosition: 'center',
+                    closeTimeout: 3000,
+                });
+            }
+            // Open it
+            successToast.open();
+        }
+
+        const saveToMS = () => {
+            if (!save()) return;
+            app.saveToMS(showSuccessToast);
+        }
+
+        const save = () => {
+            if (fontSize === -1) {
+                fontSizeChange(1);
+            }
+
+            let formData = $f7.form.convertToData('#module_settings_form');
+            let ret = false;
+
+            // Validation
+            if (!formData.hasOwnProperty('age')) {
+                showAgeToast()
+                ret = true;
+            }
+
+            if ((!formData.hasOwnProperty('username') || !formData['username'])) {
+                console.log(formData);
+                console.log(formData.hasOwnProperty('username'))
+                showNameToast()
+                ret = true;
+            }
+
+            if (ret) return false;
+
+            let age = formData['age'];
+            age = parseInt(age);
+            $store.dispatch('setAge', { age: age });
+
+            showSuccessToast();
+        }
+
+        $on('pageInit', (e, page) => {
+            $f7.setSelectedMenuItem('settings');
+
+            let fs = fontSize === -1 ? `#settings_font_1` : `#settings_font_${fontSize}`;
+            $(fs).addClass('selected');
+            try {
+                let user = $f7.usermanager.create({
+                    defaultSelector: '.modul_sebepoznani',
+                    containerEl: '#module_settings',
+                    formEl: '#module_settings_form',
+                    usernameTextEl: '#module_settings_name_input',
+                    usernameTextElName: 'username',
+                    ulozitButtonEl: '.module_settings_save_btn',
+                });
+            } catch (err) {
+                console.log(err.message);
+            }
+
+            $store.dispatch('getUser');
+            $store.dispatch('getAge');
+
+            username = $store.getters.user.value;
+            userAge = $store.getters.userAge.value;
+
+            $('.radio-age input[type=radio]').forEach(el => {
+                let radioEl = $(el);
+                if (parseInt(radioEl.val()) === userAge) radioEl.attr('checked', 'checked');
+            });
+            $update();
+        });
+
+        $on('pageBeforeOut', () => {
+            $f7.toast.close();
+        })
+
+        $on('pageBeforeRemove', () => {
+            if (ageToast) ageToast.destroy();
+            if (nameToast) nameToast.destroy();
+        })
+
+        return $render;
+    }
+</script>

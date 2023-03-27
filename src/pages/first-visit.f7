@@ -1,0 +1,290 @@
+<template>
+    <div class="page sc_first_visit" data-name="first-visit">
+        <div class="tabs-animated-wrap">
+            <div class="tabs">
+                <div id="tab-1" class="page-content tab tab-active">
+                    <div class="tab-block">
+                        <div class="tab-content row">
+                            <div class="col-100 bottom">
+                                <img class="ship" src="/static/images/lod/lod.svg" />
+                            </div>
+                            <div class="col-100">
+                                <h1>Moje kariéra: tvůj průvodce kariérou</h1>
+                                <p>Vybuduj si ideální kariéru.</p>
+                            </div>
+                            <div class="col-100 bottom">
+                                <div class="bullets">
+                                    <span class="dot selected"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="display-flex justify-content-center">
+                                    <a href="#tab-2"
+                                        class="button button-fill button-large button-default-dark tab-link">JDEME NA
+                                        TO</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-2" class="page-content tab">
+                    <div class="tab-block">
+                        <div class="tab-content row">
+                            <h1 class="col-100">Už jsi aplikaci využil?</h1>
+                            <p class="col-100">Pokud sis uložil data na svůj účet Microsoft, přihlas se.</p>
+                            <div class="col-100 row btns">
+                                <a href="#"
+                                    class="button button-fill button-large button-center button-default-light button-icon col-100"
+                                    @click="${$f7.loadFromMS}">
+                                    <span class="button-media hide-fs-2 hide-fs-3">
+                                        <img id="MSLogo" src="/static/images/ms-logo.svg" class="hide-fs-2 hide-fs-3" />
+                                    </span>
+                                    <span class="button-text">
+                                        NAČÍST Z ÚČTU MICROSOFT
+                                    </span>
+                                </a>
+                                <div class="col-100">
+                                    <div class="display-flex justify-content-center">
+                                        <a href="#tab-3"
+                                            class="button button-fill button-large button-default-dark tab-link">JSEM
+                                            ZDE NOVĚ</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-3" class="page-content tab">
+                    <div class="tab-block">
+                        <div class="tab-content row">
+                            <a href="#tab-2" class="tab-link text-align-left"><i
+                                    class="fas fa-arrow-left col-100 back"></i></a>
+                            <h1 class="col-100 bottom">Velikost písma</h1>
+                            <p class="col-100">Zvol si velikost písma, která ti vyhovuje.</p>
+                            <div class="settings_font col-100">
+                                <div id="settings_font_1"
+                                    class="button button-fill button-square button-inline button-default-dark fs-btn-1"
+                                    @click="${() => fontSizeChange(1)}">1</div>
+                                <div id="settings_font_2"
+                                    class="button button-fill button-square button-inline button-default-dark fs-btn-2"
+                                    @click="${() => fontSizeChange(2)}">2</div>
+                                <div id="settings_font_3"
+                                    class="button button-fill button-square button-inline button-default-dark fs-btn-3"
+                                    @click="${() => fontSizeChange(3)}">3</div>
+                            </div>
+                            <div class="col-100 bottom">
+                                <div class="bullets">
+                                    <span class="dot"></span>
+                                    <span class="dot selected"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="display-flex justify-content-center">
+                                    <a @click="${saveFont}"
+                                        class="button button-fill button-large button-default-dark tab-link">POKRAČOVAT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-4" class="page-content tab">
+                    <div class="tab-block">
+                        <div class="tab-content row username-tab">
+                            <a href="#tab-3" class="tab-link text-align-left"><i
+                                    class="fas fa-arrow-left col-100 back"></i></a>
+                            <h1 class="col-100">Uživatelské jméno</h1>
+                            <p class="col-100">Zadej své jméno, nebo přezdívku.</p>
+                            <form class="list form-store-data no-hairlines-md margin-bottom col-100"
+                                id="module_first_visit_form">
+                                <ul>
+                                    <li class="item-content item-input item-input-outline">
+                                        <div class="item-inner">
+                                            <div class="item-title item-floating-label">Uživatelské jméno</div>
+                                            <div class="item-input-wrap">
+                                                <input type="text" name="username" id="module_first_visit_name_input"
+                                                    placeholder="Jméno, nebo přezdívka" required />
+                                                <span class="input-clear-button"></span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </form>
+                            <div class="col-100 bottom">
+                                <div class="bullets">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot selected"></span>
+                                    <span class="dot"></span>
+                                </div>
+                                <div class="display-flex justify-content-center">
+                                    <a @click="${saveUser}"
+                                        class="button button-fill button-large button-default-dark tab-link"
+                                        id="module_first_visit_save_btn">POKRAČOVAT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-5" class="page-content tab">
+                    <div class="tab-block">
+                        <div class="tab-content row">
+                            <a href="#tab-4" class="tab-link text-align-left"><i
+                                    class="fas fa-arrow-left col-100 back"></i></a>
+                            <h1 class="col-100 bottom">Věková kategorie</h1>
+                            <p class="col-100">Vyber, do které věkové kategorie patříš.</p>
+                            <div class="age-setting col-100">
+                                <div id="age_1"
+                                    class="button button-fill button-square button-inline button-default-dark"
+                                    @click="${() => setAge(1)}">ZŠ</div>
+                                <div id="age_2"
+                                    class="button button-fill button-square button-inline button-default-dark"
+                                    @click="${() => setAge(2)}">SŠ</div>
+                                <div id="age_3"
+                                    class="button button-fill button-square button-inline button-default-dark"
+                                    @click="${() => setAge(3)}">JINÉ</div>
+                            </div>
+                            <div class="col-100 bottom">
+                                <div class="bullets">
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot"></span>
+                                    <span class="dot selected"></span>
+                                </div>
+                                <div class="display-flex justify-content-center">
+                                    <a @click="${done}"
+                                        class="button button-fill button-large button-default-dark tab-link">DOKONČIT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $, $f7, $f7router, $store, $update, $on }) => {
+        let fontSize = $store.getters.fontSize.value;
+        let ageToast, nameToast;
+        const username = $store.getters.user.value;
+        const userAge = $store.getters.userAge.value;
+
+        const tab_5 = () => {
+
+        }
+
+        const fontSizeChange = (size) => {
+            $store.dispatch('setFontSize', { size: size });
+            fontSize = size;
+            $(`.settings_font .selected`).removeClass('selected');
+            $(`#settings_font_${fontSize}`).addClass('selected');
+        }
+
+        const showAgeToast = () => {
+            if (!ageToast) {
+                ageToast = $f7.toast.create({
+                    text: 'Vyber si prosím školu, na kterou chodíš. Pokud již do školy nechodíš, zvol možnost Jiné.',
+                    closeTimeout: 4000,
+                    horizontalPosition: 'center',
+                });
+            }
+            ageToast.open();
+        }
+
+        const showNameToast = () => {
+            if (!nameToast) {
+                nameToast = $f7.toast.create({
+                    text: 'Zadej prosím své jméno, nebo přezdívku.',
+                    closeTimeout: 4000,
+                    position: 'center',
+                    horizontalPosition: 'center',
+                });
+            }
+            nameToast.open();
+        }
+
+        const saveFont = () => {
+            if (fontSize === -1) {
+                fontSizeChange(1);
+            }
+
+            $f7.tab.show("#tab-4");
+        }
+
+        const saveUser = () => {
+            let formData = $f7.form.convertToData('#module_first_visit_form');
+
+            if ((!formData.hasOwnProperty('username') || !formData['username'])) {
+                showNameToast()
+                return;
+            }
+
+            $f7.store.dispatch('getUser');
+
+            $f7.tab.show("#tab-5");
+        }
+
+        const setAge = (age) => {
+            $store.dispatch('setAge', { age: age });
+            $('.age-setting .selected').removeClass('selected');
+            let ageEl = `#age_${age}`;
+            $(ageEl).addClass('selected');
+        }
+
+        const done = () => {
+            console.log($store.getters.userAge.value);
+            if ($store.getters.userAge.value < 1 || $store.getters.userAge.value > 3) {
+                $store.dispatch('setAge', { age: 1 });
+            }
+            $f7.panel.get('.panel-left').enableVisibleBreakpoint();
+            $f7.panel.get('.panel-left').enableCollapsedBreakpoint();
+            $('.navbar').show();
+            $f7.views.main.router.navigate('/');
+        }
+
+        $on('pageInit', (e, page) => {
+            let fs = fontSize === -1 ? `#settings_font_1` : `#settings_font_${fontSize}`;
+            $(fs).addClass('selected');
+
+            let age = userAge > 0 && userAge < 4 ? `#age_${userAge}` : `#age_1`;
+            $(age).addClass('selected');
+
+            $f7.panel.get('.panel-left').disableVisibleBreakpoint();
+            $f7.panel.get('.panel-left').disableCollapsedBreakpoint();
+
+            $('.navbar').hide();
+            try {
+                let user = $f7.usermanager.create({
+                    defaultSelector: '.modul_sebepoznani',
+                    containerEl: '.username-tab',
+                    formEl: '#module_first_visit_form',
+                    usernameTextEl: '#module_first_visit_name_input',
+                    usernameTextElName: 'username',
+                    ulozitButtonEl: '#module_first_visit_save_btn',
+                });
+            } catch (err) {
+                console.log(err.message);
+            }
+
+            // disable ENTER to submit a form (it reloaded page)
+            $(window).keydown((event) => {
+                if (event.keyCode == 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+        });
+
+        $on('pageBeforeOut', () => {
+            $f7.toast.close();
+        })
+
+        $on('pageBeforeRemove', () => {
+            if (ageToast) ageToast.destroy();
+            if (nameToast) nameToast.destroy();
+        })
+
+        return $render;
+    }
+</script>

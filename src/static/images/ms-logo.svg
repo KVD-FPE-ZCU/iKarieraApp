@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="18.997"
+   height="18.997"
+   viewBox="0 0 5.0262895 5.0262897"
+   version="1.1"
+   id="svg390"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="ms-logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview392"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="23.490011"
+     inkscape:cx="10.068109"
+     inkscape:cy="13.558955"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs387" />
+  <g
+     inkscape:label="Vrstva 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g829"
+       transform="translate(-0.26498023,-0.26499999)">
+      <rect
+         x="0.26499999"
+         y="0.26499999"
+         width="2.3812499"
+         height="2.3812499"
+         fill="#f25022"
+         id="rect27"
+         style="stroke-width:0.264583" />
+      <rect
+         x="2.9100001"
+         y="0.26499999"
+         width="2.3812499"
+         height="2.3812499"
+         fill="#7fba00"
+         id="rect31"
+         style="stroke-width:0.264583" />
+      <rect
+         x="0.26499999"
+         y="2.9100001"
+         width="2.3812499"
+         height="2.3812499"
+         fill="#00a4ef"
+         id="rect29"
+         style="stroke-width:0.264583" />
+      <rect
+         x="2.9100001"
+         y="2.9100001"
+         width="2.3812499"
+         height="2.3812499"
+         fill="#ffb900"
+         id="rect33"
+         style="stroke-width:0.264583" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,109 @@
+<template>
+    <div class="page sc_progress_idea" data-name="progress_idea">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link back" data-force="true" data-ignore-cache="true">
+                            <i class="icon icon-back"></i>
+                            <span class="if-not-md">Zpět</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Moje cíle
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Moje cíle
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar toolbar-bottom-md toolbar-bottom">
+            <div class="toolbar-inner">
+                <div id="module_progress_idea_prev" class="left">
+                    <div class="empty navbar-button"></div>
+                </div>
+                <div class="title">
+                    <a href="/pokrok/" class="link navbar-button">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </div>
+                <div id="module_progress_idea_prev" class="right">
+                    <a href="/pokrok/kroky/" class="link navbar-button"><i
+                            class="material-icons">keyboard_arrow_right</i></a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block">
+                <div class="header row display-flex align-items-center tablet-only">
+                    <div class="col-100 tablet-only">
+                        <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">Moje cíle</h1>
+                    </div>
+                </div>
+                <p>Máš přehled o svých silných stránkách a kompetencích.</p>
+                <h2>V čem se chceš zlepšit?</h2>
+                <form class="list inline-labels no-hairlines-md col-100 margin-bottom" id="module_progress_idea_form">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-input-wrap">
+                                    <textarea name="geting_better_at" id="module_progress_idea_getting_better_at_input"
+                                        placeholder="Sem uveď, v čem se chceš zlepšit." value="${gettingBetterAt}"
+                                        required></textarea>
+                                </div>
+                            </div>
+                        </li>
+                       <!-- <li class="btns">
+                            <a href="/pokrok/kroky/"
+                                class="button button-large button-center button-fill button-progress-light">
+                                POKRAČOVAT
+                            </a>
+                        </li>-->
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $, $on, $store }) => {
+        const fontSize = $store.getters.fontSize.value;
+        let gettingBetterAt = "";
+
+        const initInput = () => {
+            let ideaInput = $("#module_progress_idea_getting_better_at_input");
+            let ideaInputVal = $store.getters.idea.value;
+            if (ideaInputVal !== 0) {
+                ideaInput.val(ideaInputVal);
+            }
+
+            ideaInput.on('change', () => {
+                $store.dispatch('setIdea', { idea: ideaInput.val() });
+            });
+        }
+
+        $on('pageInit', (e, page) => {
+            $f7.setSelectedMenuItem('progress');
+
+            initInput();
+
+            try {
+                $store.dispatch('setFontSize', { size: fontSize });
+            } catch (err) {
+                console.log(err.message);
+            }
+        });
+        return $render;
+    }
+</script>

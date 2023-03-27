@@ -1,0 +1,154 @@
+<template>
+    <div class="page sc_about" data-name="about">
+        <div class="navbar no-shadow phone-only">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link panel-open" data-panel=".navigation-drawer">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        O aplikaci
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        O aplikaci
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block row">
+                <div class="tablet-only col-100">
+                    <div class="tablet-only">
+                        <div class="header text-align-center">
+                            <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">O aplikaci</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-100">
+                    <p>Aplikace „Expedice Moje kariéra“ je nástroj, díky kterému má uživatel možnost zvýšit své
+                        sebepoznání, pojmenovat své schopnosti, dovednosti a kompetence, strukturovat své hodnoty,
+                        reflektovat své sny a přání.</p>
+                    <p>Aplikace vznikla v rámci projektu "Vzděláním k úspěchu bez bariér", který realizuje Západočeská
+                        univerzita v Plzni ve spolupráci s Krajským centrem vzdělávání a Jazykové školy, Plzeň –
+                        střediskem Info Kariéra (<a href="http://www.inforkariera.cz" target="_blank"
+                            class="external">www.infokariera.cz</a>).
+                    </p>
+                    <p>Realizované aktivity projektu si kladou za cíl zajistit optimální rozvoj žáka se SVP, podpořit
+                        jeho snadnější zapojení do dalšího vzdělávání a v samotném důsledku zvýšit jeho šance na úspěšný
+                        vstup na trh práce. Tato aplikace slouží jako pomůcka pro kariérové poradenství a vzdělávání,
+                        přičemž je navržena tak, aby fungovala samostatně i jako součást školních i mimoškolních
+                        aktivit. Lze ji využít jak při práci s žáky se SVP, tak i s žáky bez speciálních potřeb.</p>
+                    <p>Pro více informací o projektu navštivte: <a href="https://www.bezbarier.zcu.cz" target="_blank"
+                            class="external">www.bezbarier.zcu.cz</a></p>
+                </div>
+                <div class="col-100">
+                    <h2>Autoři aplikace</h2>
+                    <p>Jan Brabec, Tomáš Jakeš, David Kohout, Barbora Kreislová, Jana Slezáková</p>
+
+                    <h2>Zdroje</h2>
+                    <p>Seznam a škálování měkkých kompetencí podle Národní soustavy povolání (
+                        <a href="https://www.nsp.cz" target="_blank" class="external">www.nsp.cz</a>)
+                    </p>
+
+                    <h2>O projektu</h2>
+                    <p>
+                        <strong>Název projektu:</strong>
+                    <div>Vzděláním k úspěchu bez bariér</div>
+                    <strong>Registrační číslo projektu:</strong>
+                    CZ.02.3.62/0.0/0.0/16_037/0003942
+                    </p>
+                    <p>Tento projekt je spolufinancován EU.<br /></p>
+                </div>
+                <div class="col-100 row">
+                    <div class="col-100 row logo-holder">
+                        <a href="https://www.zcu.cz" target="_blank" class="external"><img
+                                src="/static/images/logo_zcu.png" class="logo-nase" alt="logo ZČU" /></a>
+                        <a href="http://www.infokariera.cz" target="_blank" class="external"><img
+                                src="/static/images/logo_infokariera_2.png" class="logo-nase"
+                                alt="logo InfoKariéra" /></a>
+                        <a href="https://www.kcvjs.cz" target="_blank" class="external"><img
+                                src="/static/images/logo_kcvjs.png" class="logo-nase" alt="logo KCVJŠ" /></a>
+                    </div>
+                    <div class="col-100">
+                        <a href="https://bezbarier.zcu.cz" target="_blank" class="external"><img id="logo_eu"
+                                src="/static/images/logolink_MSMT_VVV_hor_barva_cz.png" class="logo-eu"
+                                alt="logo EU" /></a>
+                    </div>
+                    <!--img src="./static/images/logoeu@2x.png" alt="logo EU"/-->
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $on, $store, $f7 }) => {
+        const fontSize = $store.getters.fontSize.value;
+        const resizeLogos = () => {
+            //The EU logo must be the largest - writed for backward compatibilities
+            /*try {
+                console.log("Resizing a NON EU logos");
+                //let eu_size = this.$('.logo-nase').height();
+                let eu_size = document.getElementById("logo_eu").offsetHeight;
+                //console.log(eu_size);
+                if (parseInt(eu_size) > 20) {
+                    this.$('.logo-nase').css('maxHeight',(eu_size + 'px'));
+                }
+            } catch (err) {
+                console.log(err.message);
+            }*/
+        }
+
+        $on('pageInit', (e, page) => {
+            const self = this;
+            $f7.setSelectedMenuItem('about');
+            try {
+                window.addEventListener("resize", resizeLogos);
+                window.addEventListener("orientationchange", resizeLogos);
+                document.getElementById("logo_eu").addEventListener("load", resizeLogos);
+            } catch (err) {
+                console.log(err.message);
+            }
+
+            console.log("pageInit");
+        })
+
+        $on('pageBeforeRemove', (page) => {
+            const self = this;
+
+            try {
+                window.removeEventListener("resize", resizeLogos);
+                window.removeEventListener("orientationchange", resizeLogos);
+                document.getElementById("logo_eu").removeEventListener("load", resizeLogos);
+            } catch (err) {
+                console.log(err.message);
+            }
+        })
+        $on('pageAfterIn', (page) => {
+            const self = this;
+
+            /*try {
+                if (page.$el.find('#logo_eu').length > 0) {
+                    page.$el.find('#logo_eu')[0].addEventListener("load", self.resizeLogos);
+                }
+                //self.resizeLogos();
+            } catch (err) {
+                console.error(err);
+            }*/
+
+            console.log("pageAfterIn");
+        })
+        return $render;
+    };
+</script>

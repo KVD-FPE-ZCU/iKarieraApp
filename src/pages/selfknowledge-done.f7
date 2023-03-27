@@ -1,0 +1,72 @@
+<template>
+    <div class="page sc_sebepoznani_finale" data-name="sebepoznani_finale">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link back" data-force="true" data-ignore-cache="true">
+                            <i class="icon icon-back"></i>
+                            <span class="if-not-md">Zpět</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Sebepoznání
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Sebepoznání
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block">
+                <div class="header row display-flex align-items-center tablet-only">
+                    <div class="col-100 tablet-only">
+                        <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">Moje sebepoznání</h1>
+                    </div>
+                </div>
+                <h2 class="ship-text">Tvá loď je již slušně vybavená.</h2>
+                <div id="ship-obj">
+                    <object id="ship" type="image/svg+xml" data="/static/images/lod/lod.svg"></object>
+                </div>
+                <p>Pro tvojí plavbu kariérou jsou tyto kompetence důležité.
+                    <span class="hidden">Projdi si svoje fotografie a jistě najdeš i jejich důkazy.</span>
+                </p>
+                <p><a href="/sebepoznani/souhrn/"
+                        class="button button-center button-large button-fill button-selfknowledge-dark">Souhrn
+                        dovedností</a></p>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $on, $f7, $store }) => {
+        const fontSize = $store.getters.fontSize.value;
+
+        $on('pageInit', (e, page) => {
+            try {
+                // Inicializace lodi
+                let svg = $f7.svgLoader.create({
+                    defaultSelector: '#ship',
+                    svgURL: '/static/images/lod/lod.svg',
+                    loadClassShip: true,
+                    //reloadData: true,
+                });
+            } catch (err) {
+                console.log(err.message);
+            }
+        });
+
+        return $render;
+    };
+</script>

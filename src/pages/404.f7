@@ -1,0 +1,42 @@
+<template>
+<div class="page">
+  <div class="navbar no-shadow phone-only">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner sliding">
+        <div class="left">
+          <div class="phone-only">
+            <a href="#" class="link back" data-force="true" data-ignore-cache="true">
+                <i class="icon icon-back"></i>
+                <span class="if-not-md">Zpět</span>
+            </a>
+        </div>
+        </div>
+        <div class="title hide-fs-3">
+            <div class="phone-only">
+              Nenalezeno
+            </div>
+        </div>
+        <div class="title large-title hide-fs-1 hide-fs-2">
+            <div class="phone-only">
+              Nenalezeno
+            </div>
+        </div>
+        <div class="left">
+            <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+            </a>
+        </div>
+    </div>
+</div>
+  <div class="page-content">
+    <div class="block block-strong">
+      <p>Požadovaná stránka nebyla nalezena.</p>
+    </div>
+  </div>
+</div>
+</template>
+<script>
+export default () => {
+  return $render;
+};
+</script>

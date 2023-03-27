@@ -1,0 +1,165 @@
+<template>
+  <div id="app">
+    <div class="tablet-only">
+      <div class="navbar no-shadow">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner sliding">
+          <div class="left">
+            <a href="#" class="link panel-toggle" data-panel=".navigation-drawer">
+              <i class="fas fa-bars"></i>
+            </a>
+            <div class="tablet-only">
+              <div class="display-flex align-items-center">
+                <a href="/" class="item-link logo display-flex align-items-center panel-close">
+                  <img alt="Loď" src="/static/images/ship_icon.svg" class="icon-logo" />
+                  <span>Moje kariéra</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="title">
+            <div class="phone-only">
+              O aplikaci
+            </div>
+          </div>
+          <div class="left">
+            <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+              <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-left panel-resizable panel-init navigation-drawer">
+      <div class="list menu-list no-hairlines no-shadow">
+        <ul>
+          <li class="phone-only">
+            <a href="/" class="item-link logo panel-close" data-force="true" data-ignore-cache="true">
+              <img alt="Loď" src="/static/images/ship_icon.svg" class="icon-logo" />
+              <span>Moje kariéra</span>
+            </a>
+          </li>
+          <li class="phone-only">
+            <hr />
+          </li>
+          <li>
+            <a href="/" class="item-content item-link item-selected item-selected-home panel-close" data-force="true" data-ignore-cache="true">
+              <div class="item-media">
+                <i class="icon material-icons if-md">home</i>
+                <i class="icon f7-icons if-not-md">house</i>
+              </div>
+              <div class="item-inner">
+                <div class="item-title">Domů</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="/sebepoznani/" class="item-content item-link img-icon item-selected-selfknowledge panel-close" data-force="true" data-ignore-cache="true">
+              <div class="item-media">
+                <img src="/static/images/ship_icon.svg" class="icon-ship" />
+              </div>
+              <div class="item-inner">
+                <div class="item-title">Sebepoznání</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="/pokrok/" class="item-content item-link item-selected-progress panel-close" data-force="true" data-ignore-cache="true">
+              <div class="item-media">
+                <i class="fas fa-list-check"></i>
+              </div>
+              <div class="item-inner">
+                <div class="item-title">Můj pokrok</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <hr />
+          </li>
+          <li>
+            <a @click="${()=> $f7.saveToMS($f7.showSuccessToast)}" class="item-content item-link img-icon">
+              <div class="item-media">
+                <img src="/static/images/ms-logo-grey.svg" class="icon-ms"></img>
+              </div>
+              <div class="item-inner">
+                <div class="item-title">Uložit na účet Microsoft</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="/nastaveni/" class="item-content item-link item-selected-settings panel-close" data-force="true" data-ignore-cache="true">
+              <div class="item-media">
+                <i class="fas fa-cog"></i>
+              </div>
+              <div class="item-inner">
+                <div class="item-title">Nastavení</div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="/o-aplikaci/" class="item-content item-link item-selected-about panel-close">
+              <div class="item-media">
+                <i class="icon material-icons if-md">information</i>
+                <i class="icon f7-icons if-not-md">info_circle_fill</i>
+              </div>
+              <div class="item-inner">
+                <div class="item-title">O aplikaci</div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Your main view, should have "view-main" class -->
+    <div class="view view-main view-init safe-areas" data-url="/"></div>
+    <!-- Popup -->
+    <div class="popup" id="my-popup">
+      <div class="view">
+        <div class="page">
+          <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner">
+              <div class="title">Popup</div>
+              <div class="right">
+                <a href="#" class="link popup-close">Close</a>
+              </div>
+            </div>
+          </div>
+          <div class="page-content">
+            <div class="block">
+              <p>Popup content goes here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  export default (props, { $f7, $store, $, $on }) => {
+    let successToast;
+
+    const showSuccessToast = () => {
+      if (!successToast) {
+        successToast = $f7.toast.create({
+          text: 'Data byla uložena na tvůj účet Microsoft.',
+          position: 'center',
+          horizontalPosition: 'center',
+          closeTimeout: 3000,
+        });
+      }
+      // Open it
+      successToast.open();
+    }
+
+    const disableVisibleBreakpoint = () => {
+      $f7.panel.get('.panel-left').disableVisibleBreakpoint()
+    }
+
+    $on('pageInit', (e, page) => {
+
+    });
+
+    return $render;
+  }
+</script>

@@ -1,0 +1,89 @@
+<template>
+    <div class="page sc_selfknowledge-history" data-name="selfknowledge_history">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link back" data-force="true" data-ignore-cache="true">
+                            <i class="icon icon-back"></i>
+                            <span class="if-not-md">Zpět</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Historie testů
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Historie testů
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block">
+                <div class="header row display-flex align-items-center tablet-only">
+                    <div class="col-100 tablet-only">
+                        <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">Historie testů</h1>
+                    </div>
+                </div>
+                ${testsDates.length !== 0 ? $h`
+                <div class="row">
+                    <div class="item-input-wrap input-dropdown-wrap col-100 select-test-date">
+                        <select name="date" id="select-history-date" @change="${dateChanged}">
+                            ${testsDates.map((item, index, testsDates) => $h`
+                            <option value="${item}">
+                                ${index === 0 ? 'Aktuální sebepoznání' : $f7.getFriendlyDate(item)}
+                            </option>
+                            `)}
+                        </select>
+                    </div>
+                    <div class="col-100 btns row margin-top">
+                        <a href="/sebepoznani/souhrn/zobraz/${selectedDate}"
+                            class="col-50 button button-center button-large button-fill button-selfknowledge-dark">Zobrazit</a>
+                        <a href="/sebepoznani/souhrn/${selectedDate}"
+                            class="col-50 button button-center button-large button-fill button-selfknowledge-light ${latestTestDate === selectedDate ? 'disabled' : ''}">
+                            Porovnat s aktuálním</a>
+                    </div>
+                </div>
+                `: $h`
+                <div class="row">
+                    <p>Zatím jsi nedokončil žádný test sebepoznání.</p>
+                </div>
+                `}
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $on, $, $f7, $store, $update }) => {
+        const fontSize = $store.getters.fontSize.value;
+        let testsDates = $store.getters.testsDates.value;
+        let selectedDate;
+        let latestTestDate;
+
+        const dateChanged = () => {
+            let date = $("#select-history-date").value();
+            selectedDate = parseInt(date);
+            $update();
+        }
+
+        $on('pageInit', (e, page) => {
+            $f7.setSelectedMenuItem('selfknowledge');
+            $store.dispatch('getTestsDates');
+            testsDates = $store.getters.testsDates.value.reverse();
+            latestTestDate = testsDates[0];
+            selectedDate = testsDates[0];
+        });
+
+        return $render;
+    };
+</script>

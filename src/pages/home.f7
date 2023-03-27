@@ -1,0 +1,185 @@
+<template>
+    <div class="page sc_home panel-page" data-name="home">
+        <div class="navbar no-shadow phone-only">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link panel-open" data-panel=".navigation-drawer">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Moje kariéra
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Moje kariéra
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content main-content hide-navbar-on-scroll">
+            <div class="content-block">
+                <div class="tablet-only">
+                    <div class="header row display-flex align-items-center">
+                        <div class="col-80 medium-100">
+                            <h1 class="tablet-only">Vítej v Moje kariéra</h1>
+                        </div>
+                        <div class="col-100 tablet-only">
+                            <p>Tvůj průvodce kariérou.</p>
+                        </div>
+                        <!--<div class="col-20 phone-only">
+                        <a @click="@${() => $f7.saveToMS($f7.showSuccessToast)}"
+                            class="button button-fill button-default-light msButton">
+                            <img id="MSLogo" src="/static/images/ms-logo-grey.svg" />
+                        </a>
+                    </div>-->
+                    </div>
+                </div>
+                <div class="phone-only welcome">
+                    <h1>Vítej <br /> v Moje kariéra!</h1>
+                </div>
+                <div class="row">
+                    <div class="col-100 medium-50">
+                        <div class="card">
+                            <div class="card-content card-content-padding row card-selfknowledge">
+                                <div class="col-65">
+                                    <h2>Sebepoznání</h2>
+                                    <p>Pojmenuj své schopnosti, dovednosti a kompetence.</p>
+                                </div>
+                                <div class="col-35 card-ship hide-fs-3">
+                                    <div>
+                                        <object class="ship" type="image/svg+xml"
+                                            data="/static/images/lod/lod.svg"></object>
+                                    </div>
+                                </div>
+                                <div class="btns col-100 row">
+                                    <a href="/sebepoznani/" id="btn_moje_expedice"
+                                        class="button button-fill button-large button-center button-selfknowledge-light col-100 large-50">Přehled
+                                        sebepoznání</a>
+                                    <a href="/sebepoznani/test/" id="btn-new-selfknowledge"
+                                        class="button button-large button-center button-fill button-selfknowledge-dark col-100 large-50">
+                                        ${$f7.showContinueText() ? 'Pokračovat v testu' : 'Nový test'}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-100 medium-50">
+                        <div class="card">
+                            <div class="card-content card-content-padding row card-progress">
+                                <div class="col-100">
+                                    <h2>Můj pokrok</h2>
+                                    <p>Urči, v čem se chceš zlepšit, jak toho chceš dosáhnout a kdy bys rád viděl
+                                        pokrok.
+                                    </p>
+                                </div>
+                                <div class="btns col-100 row">
+                                    <a href="/pokrok/"
+                                        class="button button-large button-center button-fill button-progress-very-light col-100 large-50">
+                                        Přehled pokroku
+                                    </a>
+                                    <a href="/pokrok/zlepseni/"
+                                        class="button button-large button-center button-fill button-progress-light col-100 large-50">
+                                        Průvodce pokrokem
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $, $on, $store, $update, $onMounted }) => {
+        let initialized = false;
+        const fontSize = $store.getters.fontSize.value;
+        let testsDates = $store.getters.testsDates.value;
+        let latestTest = $store.getters.questionGroup.value;
+        let prevTest = null;
+        let latestTestFinished = false;
+
+        const setOnMenuItemClick = (e) => {
+            try {
+                var svg = document.getElementById("MAINmenu");
+                if ((svg != null) && (typeof (svg) != 'undefined')) {
+                    var el = svg.contentDocument.getElementById("_1");
+
+                    if (el !== undefined) {
+                        el.addEventListener("click", sebepoznaniClick);
+                    }
+
+                    el = svg.contentDocument.getElementById("_2");
+                    if (el !== undefined) {
+                        el.addEventListener("click", informaceClick);
+                    }
+
+                    el = svg.contentDocument.getElementById("_3");
+                    if (el !== undefined) {
+                        el.addEventListener("click", seberizeniClick);
+                    }
+
+                    el = svg.contentDocument.getElementById("_4");
+                    if (el !== undefined) {
+                        el.addEventListener("click", sebeprezentaceClick);
+                    }
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        const onSVGLoaded = (e) => {
+            if (!initialized) {
+                initialized = true;
+                setOnMenuItemClick();
+            }
+        }
+
+        const dateChanged = () => {
+            let val = $("#select-date").value();
+            val = parseInt(val);
+
+            $f7.getTest(new Date(val));
+            prevTest = $store.getters.questionGroup.value.items;
+            console.log(prevTest);
+        }
+
+        $on('pageInit', (e, page) => {
+            $f7.setSelectedMenuItem('home');
+
+            try {
+                const fs = $store.getters.fontSize.value;
+                $store.dispatch('setFontSize', { size: fs });
+
+                $("#MAINmenu").on("load", onSVGLoaded);
+
+                // Inicializace lodi
+                let svg = $f7.svgLoader.create({
+                    defaultSelector: '.ship',
+                    svgURL: '/static/images/lod/lod.svg',
+                    loadClassShip: true,
+                    //reloadData: true,
+                });
+            } catch (err) {
+                console.log(err.message);
+            }
+
+            let lastFinishedTestDate = $f7.getLastFinishedTestDate();
+            $f7.getTest(lastFinishedTestDate);
+            latestTest = $store.getters.questionGroup.value;
+        });
+        return $render;
+    }
+</script>

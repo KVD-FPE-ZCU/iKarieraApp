@@ -1,0 +1,216 @@
+<template>
+    <div class="page sc_progress_steps" data-name="progress_steps">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link back" data-force="true" data-ignore-cache="true">
+                            <i class="icon icon-back"></i>
+                            <span class="if-not-md">Zpět</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Moje kroky
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Moje kroky
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar toolbar-bottom-md toolbar-bottom">
+            <div class="toolbar-inner">
+                <div id="module_progress_idea_prev" class="left">
+                    <a @click="${navigateBack}" class="link navbar-button"><i
+                            class="material-icons">keyboard_arrow_left</i></a>
+                </div>
+                <div class="title">
+                    <a href="/pokrok/" class="link navbar-button">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </div>
+                <div id="module_progress_idea_prev" class="right">
+                    <a @click="${orderStepsTitle}" class="link navbar-button"><i
+                            class="material-icons">keyboard_arrow_right</i></a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block">
+                <div class="header row display-flex align-items-center tablet-only">
+                    <div class="col-100 tablet-only">
+                        <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">Moje kroky</h1>
+                    </div>
+                </div>
+                <p>
+                    Tvým cílem je zlepšit se v:
+                </p>
+                <p class="my-goal">
+                    ${myGoal}
+                </p>
+                <h2 id="changable-title">Které kroky k tomu povedou?</h2>
+                <form class=" inline-labels no-hairlines-md col-100 margin-bottom" id="module_progress_steps_form">
+                    <div class="list sortable sortable-tap-hold form-inputs no-hairlines-md">
+                        <ul id="list_of_steps">
+                            ${steps.map((step, index) => $h`
+                            <li data-index="${index}">
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">${index + 1}.</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="step_${index}" id="step_input_${index}"
+                                                placeholder="Tvůj ${index + 1}. krok" value="${step.title}" required />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sortable-handler fa-solid fa-arrows-up-down"></div>
+                            </li>
+                            `)}
+                        </ul>
+                    </div>
+                </form>
+                <div class="control-btns" id="show_add_button">
+                    <div class="add-input-btn" @click="${() => addInput()}">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $, $on, $store }) => {
+        const fontSize = $store.getters.fontSize.value;
+        let steps = $f7.stepsManager.getSteps(1);
+        let gettingBetterAt = "";
+        let orderStepsActive = false;
+        const myGoal = $store.getters.idea.value;
+
+        $f7.on('sortableSort', (listEl, indexes) => {
+            reorder();
+            const inputEl = $(listEl).find('input');
+            if (inputEl.val() !== '') {
+                $f7.stepsManager.changeOrder(indexes);
+            }
+        });
+
+        const navigateBack = () => {
+            if (orderStepsActive) {
+                $f7.views.main.router.refreshPage();
+            } else {
+                $f7.views.main.router.navigate('/pokrok/zlepseni/');
+            }
+        }
+
+        const orderStepsTitle = () => {
+            if (!orderStepsActive) {
+                orderStepsActive = true;
+                $('#changable-title').text("Seřaď kroky podle důležitosti.");
+                $("#show_add_button").hide();
+            } else {
+                $f7.views.main.router.navigate('/pokrok/');
+            }
+        }
+
+        const reorder = () => {
+            $('#list_of_steps li').each((el, index) => {
+                $(el).find('.item-label').text((index + 1) + '.');
+                $(el).attr('data-index', index);
+                let input = $(el).find('input');
+                input.attr('placeholder', `Tvůj ${index + 1}. krok`);
+                input.attr('id', `step_input_${index}`);
+            });
+        }
+
+        const showAddButton = () => {
+            let showAddButton = true;
+            $('#module_progress_steps_form ul li input').each((el, index) => {
+                if ($(el).val() === '') {
+                    showAddButton = false;
+                }
+            });
+
+            if (showAddButton) {
+                $("#show_add_button").show();
+            } else {
+                $("#show_add_button").hide();
+            }
+        }
+
+        const showAddButtonOnInputLastInput = (el) => {
+            let element = $(el.target);
+            let listLastChildsInput = $('#module_progress_steps_form ul li:last-child').find('input');
+
+            if (element.val === '' && listLastChildsInput === element) { }
+        }
+
+        const onInputInputStep = (el) => {
+            const element = $(el.target);
+            const stepNumber = parseInt(element.parents('li').attr('data-index'));
+            const value = element.val();
+
+            if (value === '') {
+                $f7.stepsManager.remove(stepNumber);
+                element.parents('li').remove();
+
+                if ($f7.stepsManager.getStepCount() < 1) {
+                    addInput();
+                }
+
+                reorder();
+                return;
+            }
+
+            $f7.stepsManager.step({ order: stepNumber, title: element.val() });
+            element.parents('li').removeClass("no-sorting");
+            showAddButton();
+        }
+
+        const addInput = () => {
+            let newStepNumber = $f7.stepsManager.getStepCount();
+            $('#module_progress_steps_form ul').append(`\
+                <li data-index="${newStepNumber}" class="no-sorting"> 
+                    <div class="item-content item-input">\
+                        <div class="item-inner">
+                            <div class="item-title item-label">${newStepNumber + 1}.</div>
+                            <div class="item-input-wrap">
+                                <input type="text" id="step_input_${newStepNumber}"
+                                    placeholder="Tvůj ${newStepNumber + 1}. krok" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sortable-handler fa-solid fa-arrows-up-down"></div>
+                </li>`);
+
+            $('#module_progress_steps_form ul li:last-child').on('input', (el) => onInputInputStep(el));
+            showAddButton();
+        }
+
+        $on('pageInit', (e, page) => {
+            $f7.sortable.enable(".form-inputs");
+            $f7.setSelectedMenuItem('progress');
+            $('#module_progress_steps_form ul li').each((el, index) => {
+                $(el).on('input', (el) => onInputInputStep(el));
+            });
+
+            showAddButton();
+
+            try {
+                $store.dispatch('setFontSize', { size: fontSize });
+            } catch (err) {
+                console.log(err.message);
+            }
+        });
+        return $render;
+    }
+</script>

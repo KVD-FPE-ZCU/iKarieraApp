@@ -1,0 +1,254 @@
+<template>
+    <div class="page sc_sebepoznani" data-name="sebepoznani">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link back" data-force="true" data-ignore-cache="true">
+                            <i class="icon icon-back"></i>
+                            <span class="if-not-md">Zpět</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Test sebepoznání
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Test sebepoznání
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="numbers-bottom" id="module-selfknowledge-questions-numbers">
+            <div>
+                <div class="display-flex justify-content-center arrow">
+                    <i class="fas fa-arrow-down arrow-d" @click="${hideNumbers}"></i>
+                    <i class="fas fa-arrow-up arrow-u" @click="${showNumbers}"></i>
+                </div>
+                <div class="numbers-rows">
+                        <a class="button button-fill noselect" id="question-number-0"
+                            href="/sebepoznani/test/0/">1</a>
+                        <a class="button button-fill noselect" id="question-number-1"
+                            href="/sebepoznani/test/1/">2</a>
+                        <a class="button button-fill noselect" id="question-number-2"
+                            href="/sebepoznani/test/2/">3</a>
+                        <a class="button button-fill noselect" id="question-number-3"
+                            href="/sebepoznani/test/3/">4</a>
+                        <a class="button button-fill noselect" id="question-number-4"
+                            href="/sebepoznani/test/4/">5</a>
+                        <a class="button button-fill noselect" id="question-number-5"
+                            href="/sebepoznani/test/5/">6</a>
+                        <a class="button button-fill noselect" id="question-number-6"
+                            href="/sebepoznani/test/6/">7</a>
+                        <a class="button button-fill noselect" id="question-number-7"
+                            href="/sebepoznani/test/7/">8</a>
+                        <a class="button button-fill noselect" id="question-number-8"
+                            href="/sebepoznani/test/8/">9</a>
+                        <a class="button button-fill noselect" id="question-number-9"
+                            href="/sebepoznani/test/9/">10</a>
+                        <a class="button button-fill noselect" id="question-number-10"
+                            href="/sebepoznani/test/10/">11</a>
+                        <a class="button button-fill noselect" id="question-number-11"
+                            href="/sebepoznani/test/11/">12</a>
+                        <a class="button button-fill noselect" id="question-number-12"
+                            href="/sebepoznani/test/12/">13</a>
+                        <a class="button button-fill noselect" id="question-number-13"
+                            href="/sebepoznani/test/13/">14</a>
+                        <a class="button button-fill noselect" id="question-number-14"
+                            href="/sebepoznani/test/14/">15</a>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar toolbar-bottom-md toolbar-bottom">
+            <div class="toolbar-inner">
+                <div id="modul_sebepoznani_prev" class="left">
+                    <a href="#" class="link navbar-button"><i class="material-icons">keyboard_arrow_left</i></a>
+                </div>
+                <div class="title">
+                    <a href="/sebepoznani/" class="link navbar-button">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </div>
+                <div id="modul_sebepoznani_next" class="right">
+                    <a href="#" class="link navbar-button"><i class="material-icons">keyboard_arrow_right</i></a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block row selfknowledge-content">
+                <div id="modul_sebepoznani" class="row modul_sebepoznani col-100">
+                    <div class="col-100 row level-control">
+                        <div class="col-100 medium-50 scr-1-page">
+                            <h1 id="modul_sebepoznani_nadpis" class="col-100 row text-align-left"></h1>
+                            <div class="row modul_sebepoznani_uroven">
+                                <!--div class="col-30 medium-20 row justify-content-center justify-content-end justify-content-flex-end"-->
+                                <div class="col-30 medium-20 row justify-content-center">
+                                    <div id="modul_sebepoznani_uroven_down" class="modul_sebepoznani_uroven_down">
+                                        <i class="icon f7-icons">minus</i>
+                                    </div>
+                                </div>
+                                <div id="modul_sebepoznani_boxik" class="modul_sebepoznani_boxik col-40 medium-60">
+                                    <div id="modul_sebepoznani_level_number" class="modul_sebepoznani_level_number">
+                                    </div>
+                                    <div class="modul_sebepoznani_level_text">úroveň</div>
+                                </div>
+                                <!--div class="col-30 medium-20 row justify-content-start"-->
+                                <div class="col-30 medium-20 row justify-content-center">
+                                    <div id="modul_sebepoznani_uroven_up" class="modul_sebepoznani_uroven_up">
+                                        <i class="icon f7-icons">plus</i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="modul_sebepoznani_popis" class="row modul_sebepoznani_popis"></div>
+                        </div>
+                        <div id="modul_sebepoznani_zhodnoceni"
+                            class="col-100 medium-50 row scr-2-page modul_sebepoznani_zhodnoceni">
+                            <h1 id="modul_sebepoznani_text_zhodnoceni" class="col-100 row title text-align-center">
+                                Moje pružnost je na úrovni:
+                            </h1>
+                            <div id="modul_sebepoznani_levels_info" class="col-100 row levels"
+                                style="justify-content: space-around;">
+                                <div id="level_info_0" class="col-15 button button-fill noselect">0</div>
+                                <div id="level_info_1" class="col-15 button button-fill noselect">1</div>
+                                <div id="level_info_2" class="col-15 button button-fill noselect">2</div>
+                                <div id="level_info_3" class="col-15 button button-fill noselect active">3</div>
+                                <div id="level_info_4" class="col-15 button button-fill noselect">4</div>
+                                <div id="level_info_5" class="col-15 button button-fill noselect">5</div>
+                            </div>
+                            <div class="col-100 row modul_sebepoznani_picture">
+                                <div id="modul_sebepoznani_zlepseni_info"
+                                    class="modul_sebepoznani_zlepseni_info col-100">
+                                    <ul>
+                                        <li>Zde máš prostor pro zlepšení.</li>
+                                        <li>Půjdeš do toho?</li>
+                                        <li>Čím začneš?</li>
+                                    </ul>
+                                </div>
+                                <div class="col-100 picture">
+                                    <object id="modul_sebepoznani_image_zhodnoceni" type="image/svg+xml" data=""
+                                        style="width:100%; height:auto; display:block; "></object>
+                                </div>
+                                <div class="col-100">
+                                    <div id="modul_sebepoznani_souhlas"
+                                        class="button button-large button-center button-fill button-selfknowledge-dark souhlas hidden">
+                                        <i class="material-icons">done</i>
+                                        <span class="text-souhlas">SOUHLASÍM</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $on, $, $store }) => {
+        const fontSize = $store.getters.fontSize.value;
+
+        //This is bugged – when page is reloaded, it adds another row of numbers
+        /* const addDivNumbers = () => { 
+             for(let i = 0; i < 9; i++) {
+                 let a = document.createElement('a');
+ 
+                 a = $(a)
+                     .addClass('col-10 button button-fill noselect')
+                     .attr('id', `question-number-${i}`)
+                     .attr('href', `/sebepoznani/test/${i}/`)
+                     .html(i + 1);
+ 
+                 $('#module-selfknowledge-questions-numbers .numbers-row-1').append(a);
+ 
+                 a = document.createElement('a');
+ 
+                 if (i < 6) {
+                     a = $(a)
+                         .addClass('col-10 button button-fill noselect')
+                         .attr('id', `question-number-${i + 9}`)
+                         .attr('href', `/sebepoznani/test/${i + 9}/`)
+                         .html(i + 10);
+                 } else {
+                     a = $(a).addClass('col-10');
+                 }   
+                 $('#module-selfknowledge-questions-numbers .numbers-row-2').append(a);
+             }
+             
+         }*/
+
+         const showNumbers = () => {
+            $('.numbers-rows').show();
+            $('.sc_sebepoznani').css('padding-bottom', '150px');
+            $('.arrow-d').show();
+            $('.arrow-u').hide();
+         }
+
+         const hideNumbers = () => {
+            $('.numbers-rows').hide();
+            $('.sc_sebepoznani').css('padding-bottom', '84px');
+            $('.arrow-d').hide();
+            $('.arrow-u').show();
+         }
+
+        $on('pageInit', (e, page) => {
+            $f7.getTest();
+            $f7.setSelectedMenuItem('selfknowledge');
+            try {
+                const choicemanager = $f7.choicemanager.create({
+                    containerEl: '#modul_sebepoznani',
+                    titleEl: '#modul_sebepoznani_nadpis',
+                    descEl: '#modul_sebepoznani_popis',
+                    levelEl: '#modul_sebepoznani_level_number',
+                    levelNumberZero: "#level_info_0",
+                    levelNumberOne: "#level_info_1",
+                    levelNumberTwo: "#level_info_2",
+                    levelNumberThree: "#level_info_3",
+                    levelNumberFour: "#level_info_4",
+                    levelNumberFive: "#level_info_5",
+                    levelUpEl: '#modul_sebepoznani_uroven_up',
+                    levelDownEl: '#modul_sebepoznani_uroven_down',
+                    prevEl: '#modul_sebepoznani_prev',
+                    nextEl: '#modul_sebepoznani_next',
+                    saveEl: '#modul_sebepoznani_souhlas',
+                    sectionZhodnoceniEl: '#modul_sebepoznani_zhodnoceni',
+                    zhodnoceniTextEl: '#modul_sebepoznani_text_zhodnoceni',
+                    zhodnoceniImageEl: '#modul_sebepoznani_image_zhodnoceni',
+                    zhodnoceniLevelInfoEl: '#modul_sebepoznani_levels_info',
+                    zhodnoceniDoporuceniEl: '#modul_sebepoznani_zlepseni_info',
+                    questionsNumbersEl: '#module-selfknowledge-questions-numbers',
+                    questionNumber: '#question-number-',
+                    urlBeforeFirstPage: '/',
+                    urlAfterLastPage: '/sebepoznani/finale/',
+                    loadQuestionFromApp: true,
+                    on: {
+                        change: function () {
+                            // console.log('Sebepoznání se změnilo 5555 changed')
+                        }
+                    },
+                });
+                $('.numbers-rows').hide();
+                $('.sc_sebepoznani').css('padding-bottom', '84px');
+                $('.arrow-d').hide();
+
+                if (page.route.params.id) {
+                    choicemanager.questions.setActualQuestionIdx(page.route.params.id);
+                    choicemanager.updateQuestion(choicemanager.questions.actualQuestion());
+                }
+
+            } catch (err) {
+                console.log(err.message);
+            }
+        })
+        return $render;
+    }
+
+</script>

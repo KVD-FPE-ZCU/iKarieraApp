@@ -1,0 +1,157 @@
+<template>
+    <div class="page sc_progress_main panel-page" data-name="progress-main">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link panel-open" data-panel=".navigation-drawer">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Můj pokrok
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Můj pokrok
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block">
+                <div class="header row display-flex align-items-center">
+                    <div class="col-100">
+                        <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">Můj pokrok</h1>
+                    </div>
+                </div>
+                <div class="row no-gap progress-content">
+                    ${unfinishedSteps.length !== 0 || myGoal !== 0? $h`
+                    <div class="col-100">
+                        <div class="progress-header">
+                            <h2>Můj cíl</h2>
+                            <div class="right">
+                                <a href="/pokrok/zlepseni/" class="link">Upravit </a>
+                            </div>
+                        </div>
+                        ${myGoal !== 0 ? $h`
+                            <p>${myGoal}</p>
+                        ` : $h`
+                        <div class="add-steps-button">
+                            <a href="/pokrok/zlepseni/" class="button button-fill button-large button-progress-dark">Přidat cíl</button>
+                        </div>
+                        `}
+                    </div>
+                    <div class="col-100">
+                        <div class="progress-header">
+                            <h2>Kroky k cíli</h2>
+                            <div class="right">
+                                <a href="/pokrok/kroky/" class="link">Upravit</a>
+                            </div>
+                        </div>
+                        ${unfinishedSteps.length !== 0 ? $h`
+                        ${unfinishedSteps.map((step, index) => $h`
+                        <div class="card step-card ${index % 2 === 0 ? '' : 'card-odd'}" data-index="${step.order}">
+                            <div class="card-content card-content-padding">
+                                <h3>${step.title}</h3>
+                                <div class="c-footer">
+                                    <input type="text"
+                                        class="button button-fill button-large button-progress-very-light date-selector"
+                                        readonly="readonly" id="step-${step.order}-calendar" placeholder="Vyber datum"
+                                        value="${step.date ? 'do ' + $f7.getFriendlyDate(step.date) : ''}" />
+                                    <div class="three-dots">
+                                        <span class="fa-solid fa-ellipsis"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>           
+                        `)}
+                        ` : $h`
+                        <div class="add-steps-button">
+                            <a href="/pokrok/kroky/" class="button button-fill button-large button-progress-light">Přidat kroky</button>
+                        </div>
+                        `}
+                    </div>
+                    ${finishedSteps.length !== 0 ? $h`
+                    <div class="col-100">
+                        <h2>Už splnil</h2>
+                        ${finishedSteps.map((step, index) => $h`
+                        <div class="card card-done ${index % 2 === 0 ? '' : 'card-odd'}" data-index="${step.order}">
+                            <div class="card-content card-content-padding">
+                                <h3>${step.title}</h3>
+                                <div class="c-footer">
+                                    <div class="three-dots">
+                                        <span class="fa-solid fa-ellipsis"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `)}
+                    </div>
+                    ` : ''}
+                    ` : $h`
+                        <p class="not-visited">Abys mohl vidět svůj pokrok, musíš nejdříve projít <a href="/pokrok/zlepseni/" class="link">průvodcem</a>.</p>
+                    `}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $, $on, $store }) => {
+        const fontSize = $store.getters.fontSize.value;
+        const myGoal = $store.getters.idea.value;
+        let unfinishedSteps = $f7.stepsManager.getStepsByStatus({});
+        let finishedSteps = $f7.stepsManager.getStepsByStatus({ finished: true });
+        let calendarDefault = [];
+
+        const init = () => {          
+            for (let i = 0; i < 3; i++) {
+                calendarDefault[i] = $f7.calendar.create({
+                    inputEl: `#step-${i}-calendar`,
+                    closeOnSelect: true,
+                });
+            }
+
+            $('.step-card, .card-done').on('click', (e) => {
+                const el = $(e.target);
+                const id = parseInt(el.parents('.card').attr('data-index'));
+                $f7.views.main.router.navigate(`/pokrok/kroky/detail/${id}`);
+            });
+
+            $('.date-selector').on('click', (e) => {
+                e.stopPropagation();
+            });
+
+            $('.date-selector').on('change', (e) => {
+                const input = $(e.target);
+                const val = `do ${input.val()}`;
+                const id = parseInt(input.parents('.step-card').attr('data-index'));
+                let date = calendarDefault[id].getValue()[0];
+                let s = $f7.stepsManager.step({order: id, date: date.getTime()});
+                input.val(val);
+            });
+        }
+
+        $on('pageInit', (e, page) => {
+            $f7.setSelectedMenuItem('progress');
+            init();
+            console.log(unfinishedSteps);
+            try {
+                $store.dispatch('setFontSize', { size: fontSize });
+            } catch (err) {
+                console.log(err.message);
+            }
+        });
+        return $render;
+    }
+</script>

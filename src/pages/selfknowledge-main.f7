@@ -1,0 +1,237 @@
+<template>
+    <div class="page sc_selfknowledge_main panel-page" data-name="selfknowledge-main">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link panel-open" data-panel=".navigation-drawer">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Sebepoznání
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Sebepoznání
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block row">
+                <div class="header col-100 row display-flex align-items-center">
+                    <div class="col-100">
+                        <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">Sebepoznání</h1>
+                        <p>Pojmenuj své schopnosti, dovednosti a kompetence.</p>
+                    </div>
+                </div>
+                <div class="col-100">
+                    <div id="ship-obj" class="margin-bottom big-ship">
+                        <object id="ship" type="image/svg+xml" data="/static/images/lod/lod.svg"></object>
+                    </div>
+                    <div class="btns">
+                        <a href="/sebepoznani/test/" id="btn-new-selfknowledge"
+                            class="button button-large button-center button-fill button-selfknowledge-dark">
+                            ${$f7.showContinueText() ? 'Pokračovat v testu' : 'Nový test'}
+                        </a>
+                        <a href="/sebepoznani/historie" id="btn_moje_expedice"
+                            class="button button-fill button-large button-center button-selfknowledge-light">Historie
+                            testů</a>
+                    </div>
+                </div>
+                <div class="col-100 row">
+                    ${prevTest !== null && latestTestFinished ? $h`
+                    <h2 class="no-margin margin-top">Moje dovednosti</h2>
+                    <div class="list inline-labels no-hairlines no-hairlines-between compare col-100 row no-margin">
+                        <div class="bold col-100 hide-fs-1">Porovnat aktuální kompetence s</div>
+                        <ul class="col-100 medium-50">
+                            <li class="item-content item-input">
+                                <div class="item-inner">
+                                    <div class="item-title item-label hide-fs-2 hide-fs-3">Porovnat aktuální kompetence
+                                        s</div>
+                                    <div class="item-input-wrap input-dropdown-wrap">
+                                        <select placeholder="Prosím vyberte" id="select-date" @change="${dateChanged}">
+                                            ${testsDates.map((item, index, testsDates) => $h`
+                                            ${index !== 0 ? $h`
+                                            <option value="${item}">${$f7.getFriendlyDate(item)}</option>
+                                            ` : ''}
+                                            `)}
+                                        </select>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    ` : ''}
+                    ${latestTest !== null && latestTestFinished ? $h`
+                    ${prevTest === null ? $h`<h2 class="no-margin margin-top">Moje dovednosti
+                        (${$f7.getFriendlyDate(latestTest.date)})</h2>` : ''}
+                    <div class="compare-list col-100">
+                        <div class="progressbars-cmp">
+                            <div class="row">
+                                ${latestTest.items.map((item, index) => $h`
+                                <div class="${(fontSize < 2) ? `col-50 small-30` : 'col-100'}">${item.title_short}</div>
+                                <div class="${(fontSize < 2) ? `col-50 small-70` : 'col-100'}">
+                                    <div class="progressbar-cmp">
+                                        <div class="current" style="width:${item.selected*20}%"></div>
+                                        ${prevTest !== null ? $h`
+                                        <div class="old" style="width:${prevTest[index].selected*20}%"></div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                `)}
+                            </div>
+                        </div>
+                    </div>
+                    ${prevTest === null ? $h`
+                    <div class="col-100 medium-50"></div>
+                    <div class="col-100 medium-50 tablet-right row show-more">
+                        <a href="/sebepoznani/souhrn/${latestTest.date}"
+                        class="button button-fill button-center button-selfknowledge-dark no-margin margin-top col-60 margin-bottom btn-show-more">Zobrazit detail</a>
+                    </div>
+                    ` : ''}
+                    ` : ''}
+                    ${prevTest !== null && latestTestFinished ? $h`
+                    <div class="list inline-labels no-hairlines no-hairlines-between compare col-100 row no-margin">
+                        <div class="col-100 medium-50 display-flex margin-top">
+                            <ul>
+                                <li class="current-leg">
+                                    <div class="item-content">
+                                        <div class="item-media">
+                                            <object id="bullet-blue" type="image/svg+xml"
+                                                data="/static/images/bullet-red.svg"></object>
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">Aktuální kompetence
+                                                (${$f7.getFriendlyDate(latestTest.date)})</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="old-leg">
+                                    <div class="item-content">
+                                        <div class="item-media">
+                                            <object id="bullet-red" type="image/svg+xml"
+                                                data="/static/images/bullet-blue.svg"></object>
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">Kompetence z ${$f7.getFriendlyDate(testsDates[1])}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-100 medium-50 tablet-right row show-more">
+                            <a href="/sebepoznani/souhrn/${testsDates[1]}"
+                            class="button button-fill button-center button-selfknowledge-dark no-margin margin-top col-60 margin-bottom btn-show-more">Zobrazit detail</a>
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $, $on, $store, $update, $onMounted }) => {
+        let initialized = false;
+        const fontSize = $store.getters.fontSize.value;
+        let testsDates = $store.getters.testsDates.value;
+        let latestTest = $store.getters.questionGroup.value;
+        let prevTest = null;
+        let latestTestFinished = false;
+
+        const setOnMenuItemClick = (e) => {
+            try {
+                var svg = document.getElementById("MAINmenu");
+                if ((svg != null) && (typeof (svg) != 'undefined')) {
+                    var el = svg.contentDocument.getElementById("_1");
+
+                    if (el !== undefined) {
+                        el.addEventListener("click", sebepoznaniClick);
+                    }
+
+                    el = svg.contentDocument.getElementById("_2");
+                    if (el !== undefined) {
+                        el.addEventListener("click", informaceClick);
+                    }
+
+                    el = svg.contentDocument.getElementById("_3");
+                    if (el !== undefined) {
+                        el.addEventListener("click", seberizeniClick);
+                    }
+
+                    el = svg.contentDocument.getElementById("_4");
+                    if (el !== undefined) {
+                        el.addEventListener("click", sebeprezentaceClick);
+                    }
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        const onSVGLoaded = (e) => {
+            if (!initialized) {
+                initialized = true;
+                setOnMenuItemClick();
+            }
+        }
+
+        const dateChanged = () => {
+            let val = $("#select-date").value();
+            val = parseInt(val);
+
+            $f7.getTest(new Date(val));
+            prevTest = $store.getters.questionGroup.value.items;
+            console.log(prevTest);
+        }
+
+        $on('pageInit', (e, page) => {
+            $f7.setSelectedMenuItem('selfknowledge');
+            try {
+                const fs = $store.getters.fontSize.value;
+                $store.dispatch('setFontSize', { size: fs });
+
+                $("#MAINmenu").on("load", onSVGLoaded);
+
+                // Inicializace lodi
+                let svg = $f7.svgLoader.create({
+                    defaultSelector: '#ship',
+                    svgURL: '/static/images/lod/lod.svg',
+                    loadClassShip: true,
+                    //reloadData: true,
+                });
+            } catch (err) {
+                console.log(err.message);
+            }
+
+            $store.dispatch('getTestsDates');
+            testsDates = $store.getters.testsDates.value.reverse();
+
+            if (typeof testsDates[1] !== 'undefined') {
+                $f7.getTest(new Date(testsDates[1]));
+                prevTest = $store.getters.questionGroup.value.items;
+            } else {
+                prevTest = null;
+            }
+
+            let lastFinishedTestDate = $f7.getLastFinishedTestDate();
+            $f7.getTest(lastFinishedTestDate);
+
+            latestTest = $store.getters.questionGroup.value;
+            latestTestFinished = latestTest.isTestFinished();
+        });
+        return $render;
+    }
+</script>

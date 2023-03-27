@@ -1,0 +1,139 @@
+<template>
+    <div class="page sc_account" data-name="account">
+        <div class="tablet-only nav-top" id="nav-desktop">
+            <div class="navbar no-shadow">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                    <div class="left">
+                        <span class="desktop-only hide-fs-2 hide-fs-3">
+                            <a href="/" class="link logo">
+                                <object type="image/svg+xml" data="/static/images/ship_icon.svg"
+                                    class="icon-logo"></object>
+                                <span>Moje kariéra</span>
+                            </a>
+                        </span>
+                        <a href="/" class="link">
+                            <i class="fas fa-home hide-fs-2"></i>
+                            <span class="hide-fs-3">Domů</span>
+                        </a>
+                        <a href="/sebepoznani/" class="link">
+                            <img src="/static/images/ship_icon.svg" class="icon-ship hide-fs-2" />
+                            <span class="hide-fs-3">Sebepoznání</span>
+                        </a>
+                        <a href="/zajmy/" class="link">
+                            <i class="fas fa-water-ladder hide-fs-2"></i>
+                            <span class="hide-fs-3">Zájmy</span>
+                        </a>
+                        <a href="/pokrok/" class="link">
+                            <i class="fas fa-list-check hide-fs-2"></i>
+                            <span class="hide-fs-3">Můj pokrok</span>
+                        </a>
+                    </div>
+                    <div class="right">
+                        <a href="#" class="link active">
+                            <i class="fas fa-user hide-fs-2"></i>
+                            <span class="hide-fs-3">Můj profil</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar toolbar-bottom toolbar-bottom-md phone-only">
+            <div class="toolbar-inner">
+                <a href="/" class="link">
+                    <i class="fas fa-home"></i>
+                </a>
+                <a href="/sebepoznani/" class="link">
+                    <img src="/static/images/ship_icon.svg" class="icon-ship"></img>
+                </a>
+                <a href="#" class="link">
+                    <i class="fas fa-water-ladder"></i>
+                </a>
+                <a href="#" class="link">
+                    <i class="fas fa-list-check"></i>
+                </a>
+                <a href="#" class="link active">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+        <div class="page-content main-content">
+            <div class="content-block row">
+                <div class="header col-100 row display-flex align-items-center">
+                    <div class="col-100">
+                        <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">${username}</h1>
+                    </div>
+                </div>
+                <div class="col-100 page-menu">
+                    <div class="list">
+                        <ul>
+                            <li>
+                                <a href="/nastaveni/" class="item-link item-content">
+
+                                    <div class="item-inner">
+                                        <div class="item-media"><i class="fas fa-wrench"></i></div>
+                                        <div class="item-title">Nastavení</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a @click="${() => $f7.saveToMS(showSuccessToast)}" class="item-link item-content">
+                                    <div class="item-inner">
+                                        <div class="item-media"><img id="MSLogo" src="/static/images/ms-logo-grey.svg" /></div>
+                                        <div class="item-title">Uložit na účet Microsoft</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/o-aplikaci/" class="item-link item-content">
+
+                                    <div class="item-inner">
+                                        <div class="item-media"><i class="fas fa-info-circle"></i></div>
+                                        <div class="item-title">O aplikaci</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a @click="${$f7.logout}" class="item-link item-content">
+                                    <div class="item-inner">
+                                        <div class="item-media"><i class="fas fa-sign-out"></i></div>
+                                        <div class="item-title">Odhlásit se</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $on, $store }) => {
+        const fontSize = $store.getters.fontSize.value;
+        let username = $store.getters.user.value;
+        let successToast;
+
+        const showSuccessToast = () => {
+            if (!successToast) {
+                successToast = $f7.toast.create({
+                    text: 'Data byla uložena na tvůj účet Microsoft.',
+                    position: 'center',
+                    horizontalPosition: 'center',
+                    closeTimeout: 3000,
+                });
+            }
+            // Open it
+            successToast.open();
+        }
+
+        $on('pageInit', (e, page) => {
+            const fs = $store.getters.fontSize.value;
+            $store.dispatch('setFontSize', { size: fs });            
+            $store.dispatch('getUser');
+
+            username = $store.getters.user.value;
+        });
+        return $render;
+    }
+</script>

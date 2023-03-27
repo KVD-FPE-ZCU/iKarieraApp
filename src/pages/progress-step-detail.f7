@@ -1,0 +1,152 @@
+<template>
+    <div class="page sc_progress_step_detail panel-page" data-name="progress-detail">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="/pokrok/" class="link">
+                            <i class="icon icon-back"></i>
+                            <span class="if-not-md">Zpět</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        Detail kroku
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        Detail kroku
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block">
+                <div class="header row display-flex align-items-center">
+                    <div class="col-100">
+                        <h1 class="header-title ${(fontSize === 3) ? `fs-3-h` : ''}">${stepTitle}</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-100">
+                        <div class="row">
+                            <div class="col-50 step-button">
+                                <input type="text" value="${stepDate ? 'do ' + $f7.getFriendlyDate(stepDate) : ''}"
+                                    class="date-selector-detail button button-fill button-large button-progress-dark"
+                                    readonly="readonly" id="step-calendar" placeholder="Vyber datum" />
+                            </div>
+                            <div class="col-50 step-button">
+                                <div class="button button-fill button-large button-progress-light"
+                                    @click="${changeStatus}" id="step_status">
+                                    Probíhá
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-100 input-needs">
+                        <div class="label">Co k tomu potřebuji?</div>
+                        <textarea name="needs" id="module_progress_step_datail_needs"
+                            placeholder="Sem uveď, co ke splnění kroku potřebuješ." value="${needs}"
+                            required></textarea>
+
+                    </div>
+                    <div class="col-100 input-help">
+                        <div class="label">Kdo mi s tím může pomoci?</div>
+                        <textarea name="needs" id="module_progress_step_datail_help"
+                            placeholder="Sem uveď, kdo ti může pomoci se splněním kroku pomoci." value="${help}" required></textarea>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $f7route, $, $on, $store }) => {
+        let calendarDefault;
+        const fontSize = $store.getters.fontSize.value;
+        let needs;
+        let help;
+        let stepId;
+        let stepDate;
+        let stepTitle;
+
+        const changeStatus = () => {
+            let s = $f7.stepsManager.step({ order: stepId });
+            if (s.done === true) {
+                $f7.stepsManager.step({ order: stepId, done: false });
+                $('#step_status').text('Probíhá');
+                return;
+            }
+            $f7.stepsManager.step({ order: stepId, done: true });
+            $('#step_status').text('Dokončeno');
+        }
+
+        const initInputs = () => {
+            let temp = $f7.stepsManager.step({ order: stepId });
+
+            stepDate = temp.date;
+            stepTitle = temp.title;
+            needs = temp.needs;
+            help = temp.help;
+
+            $('#module_progress_step_datail_needs').on('input', (el) => {
+                $f7.stepsManager.step({ order: stepId, needs: $(el.target).val() });
+            });
+
+            $('#module_progress_step_datail_help').on('input', (el) => {
+                $f7.stepsManager.step({ order: stepId, help: $(el.target).val() });
+            });
+
+            if (temp.done === true) {
+                $('#step_status').text('Dokončeno');
+
+            } else {
+                $('#step_status').text('Probíhá');
+            }
+
+            initCalendar();
+        }
+
+
+        const initCalendar = () => {
+            calendarDefault = $f7.calendar.create({
+                inputEl: "#step-calendar",
+                closeOnSelect: true,
+            });
+
+            $('.date-selector-detail').on('change', (e) => {
+                const input = $(e.target);
+                const val = `do ${input.val()}`;
+                let date = calendarDefault.getValue()[0];
+                let s = $f7.stepsManager.step({ order: stepId, date: date.getTime() });
+                input.val(val);
+            });
+        }
+
+        $on('pageInit', (e, page) => {
+            $f7.setSelectedMenuItem('progress');
+            stepId = parseInt($f7route.params.step);
+
+            if(Number.isNaN(stepId)) {
+                $f7.views.main.router.navigate(`/pokrok/`);
+            }
+            initInputs();
+
+            try {
+                $store.dispatch('setFontSize', { size: fontSize });
+            } catch (err) {
+                console.log(err.message);
+            }
+        });
+        return $render;
+    }
+</script>

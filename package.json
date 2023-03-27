@@ -1,0 +1,45 @@
+{
+  "name": "ikariera",
+  "private": true,
+  "version": "1.0.0",
+  "description": "IKariera",
+  "repository": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "cross-env NODE_ENV=development vite",
+    "build": "cross-env NODE_ENV=production vite build && npx workbox generateSW workbox-config.js",
+    "postinstall": "cpy --flat ./node_modules/framework7-icons/fonts/*.* ./src/fonts/ && cpy --flat ./node_modules/material-icons/iconfont/*.* ./src/fonts/",
+    "test": "jasmine"
+  },
+  "browserslist": [
+    "IOS >= 13",
+    "Safari >= 13",
+    "last 5 Chrome versions",
+    "last 5 Firefox versions",
+    "Samsung >= 12"
+  ],
+  "dependencies": {
+    "@azure/msal-browser": "^2.27.0",
+    "@microsoft/microsoft-graph-client": "^3.0.2",
+    "chromedriver": "^103.0.0",
+    "dom7": "^4.0.4",
+    "framework7": "^7.0.5",
+    "framework7-icons": "^5.0.5",
+    "material-icons": "^1.11.4",
+    "onedrive-api": "^1.0.4",
+    "selenium-webdriver": "^4.3.1",
+    "skeleton-elements": "^4.0.0",
+    "swiper": "^8.3.0"
+  },
+  "devDependencies": {
+    "cpy-cli": "^4.1.0",
+    "cross-env": "^7.0.3",
+    "jasmine": "^4.3.0",
+    "less": "^4.1.3",
+    "postcss-preset-env": "^7.7.2",
+    "rollup-plugin-framework7": "^1.2.1",
+    "vite": "^2.9.14",
+    "workbox-cli": "^6.5.3"
+  }
+}

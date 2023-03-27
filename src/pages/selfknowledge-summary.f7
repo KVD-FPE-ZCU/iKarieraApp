@@ -1,0 +1,299 @@
+<template>
+    <div class="page sc_sebepoznani_souhrn" data-name="sebepoznani_souhrn">
+        <div class="navbar no-shadow">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <div class="phone-only">
+                        <a href="#" class="link panel-open" data-panel=".navigation-drawer">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="title hide-fs-3">
+                    <div class="phone-only">
+                        ${prevTest !== null ? 'Porovnání' : 'Sebepoznání'}
+                    </div>
+                </div>
+                <div class="title large-title hide-fs-1 hide-fs-2">
+                    <div class="phone-only">
+                        ${prevTest !== null ? 'Porovnání' : 'Sebepoznání'}
+                    </div>
+                </div>
+                <div class="left">
+                    <a @click="${() => $f7.saveToMS($f7.showSuccessToast)}" class="link">
+                        <img src="/static/images/ms-logo-grey.svg" class="img-icon"></img>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content hide-navbar-on-scroll">
+            <div class="content-block row">
+                <div class="header col-100 row display-flex align-items-center tablet-only">
+                    <div class="col-100 tablet-only">
+                        <h1 class="header-title no-margin ${(fontSize === 3) ? `fs-3-h` : ''}">
+                            ${prevTest !== null ? 'Porovnání' : 'Sebepoznání'}
+                        </h1>
+                    </div>
+                </div>
+                <div class="col-100 sc_score">
+                    <div class="row item display-flex justify-content-center user-row">
+                        <h2 class="no-margin">
+                            Test sebepoznání
+                            ${prevTest === null ? $h`
+                            ${' ' + $f7.getFriendlyDate(latestTest.date)}
+                            ` : ''}
+                        </h2>
+                        ${prevTest !== null ? $h`
+                        <div class="col-100 cmp-dates">
+                            <h3 class="no-margin">
+                                ${$f7.getFriendlyDate(prevTestDate)} a ${$f7.getFriendlyDate(latestTest.date)}
+                            </h3>
+                        </div>
+                        ` : ''}
+                        <div class="col-100 user-data row">
+                            <div class="col-50 date">
+                                ${$f7.getFriendlyDate(latestTest.date)}
+                            </div>
+                            <div class="col-50 user">
+                                ${username}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btns row">
+                        <a href="#" id="pdfDownload"
+                            class="button button-large button-fill button-selfknowledge-dark col-50"
+                            @click="${() => toPdfClick()}">Stáhnout PDF</a>
+                        <a href="#" id="msSave"
+                            class="button button-large button-fill button-selfknowledge-light col-50"
+                            @click="${() => $f7.saveToMS(showSuccessToast)}">Uložit na Microsoft</a>
+                    </div>
+                    <div class="row progressbars-cmp">
+                        <h3 class="col-100">Souhrn</h3>
+                        ${latestTest.items.map((item, index) => $h`
+                        <div class="${(fontSize < 2) ? `col-50` : 'col-100'}">${item.title_short}</div>
+                        <div class="${(fontSize < 2) ? `col-50` : 'col-100'}">
+                            <div class="progressbar-cmp">
+                                <div class="current" style="width:${item.selected*20}%"></div>
+                                ${prevTest !== null ? $h`
+                                <div class="old" style="width:${prevTest[index].selected*20}%"></div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        `)}
+                    </div>
+                    ${prevTest !== null ? $h`
+                    <div class="list inline-labels no-hairlines no-hairlines-between compare col-100 row no-margin">
+                        <div class="col-100 medium-50 display-flex margin-top">
+                            <ul>
+                                <li class="current-leg">
+                                    <div class="item-content">
+                                        <div class="item-media">
+                                            <object id="bullet-red" type="image/svg+xml"
+                                                data="/static/images/bullet-red.svg"></object>
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">Aktuální kompetence
+                                                (${$f7.getFriendlyDate(latestTest.date)})</div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="old-leg">
+                                    <div class="item-content">
+                                        <div class="item-media">
+                                            <object id="bullet-blue" type="image/svg+xml"
+                                                data="/static/images/bullet-blue.svg"></object>
+                                        </div>
+                                        <div class="item-inner">
+                                            <div class="item-title">Kompetence z
+                                                ${' ' + $f7.getFriendlyDate(prevTestDate)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    ` : ''}
+                    <div class="selfknowledge-full">
+                        <h3>Dosažené úrovně</h3>
+                        ${latestTest.items.map((item, index) => $h`
+                        <div class="row display-flex justify-content-center level-detail-card"
+                            @click="${() => menuClick(index)}">
+                            <div class="col-100 item-content">
+                                <div id="menu_sebepoznani_odkaz_{index}" class="row">
+                                    <h3>${item.title_short}</h3>
+                                </div>
+                                <div id="module_selfknowledge_desc" class="row text-align-left display-flex">
+                                    <div class="level-info col-20 medium-10 text-align-center align-self-center">
+                                        <div class="level">${item.selected}</div>
+                                        <div class="level-text">úroveň</div>
+                                    </div>
+                                    <ul class="description col-80 medium-90">
+                                        <li class="">${item.getLevelText()[0]}</li>
+                                        <li>${item.getLevelText()[1]}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        `)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $f7, $on, $store, $f7route, $update }) => {
+        const today = new Date();
+        const date = today.getDate() + '. ' + (today.getMonth() + 1) + '. ' + today.getFullYear();
+        let username = $store.getters.user.value;
+        const fontSize = $store.getters.fontSize.value;
+        let latestTest = $store.getters.questionGroup.value;
+        let prevTest = null;
+        let prevTestDate = null;
+        let successToast;
+
+        const showSuccessToast = () => {
+            if (!successToast) {
+                successToast = $f7.toast.create({
+                    text: 'Data byla uložena na tvůj účet Microsoft.',
+                    position: 'center',
+                    horizontalPosition: 'center',
+                    closeTimeout: 3000,
+                });
+            }
+            // Open it
+            successToast.open();
+        }
+
+
+        const menuClick = (num) => {
+            const url = `/sebepoznani/test/${num}/`;
+            console.log(url);
+            $f7.views.main.router.navigate(url);
+        }
+        const showLevel = (levels, index) => {
+            return levels[index];
+        }
+
+        const toPdfClick = async () => {
+            const app = $f7;
+            const fontSize = 10;
+            const today = new Date();
+            const date = today.getDate() + '. ' + (today.getMonth() + 1) + '. ' + today.getFullYear();
+            const items = latestTest.items;
+            let itemCount = 0;
+            let totalAddition = 0;
+            let pdfDoc = app.pdfLib;
+
+            await pdfDoc.init(fontSize, { r: 0.2, g: 0.2, b: 0.2 });
+            pdfDoc.addPage();
+
+            const { width, height } = pdfDoc.getPageSize();
+
+            pdfDoc.addText('SEBEPOZNÁNÍ', 240, height - 5 * fontSize, true, 20);
+            pdfDoc.addText(date, 80, height - 5 * fontSize, true);
+
+            let widthOfUsername = pdfDoc.getWidthOfText(username); // šířka jména uživatele
+
+            pdfDoc.addText(username, width - 78 - widthOfUsername, height - 5 * fontSize, true); // šířku jména uživatele využiji pro výpočet správného odsazení od okraje
+
+            items.forEach(item => {
+                let additionToBorder = 0;
+                let levelText = item.getLevelText();
+
+                if (itemCount == 8) { // na stránku je pouze 8 boxů
+                    pdfDoc.addPage()
+                    itemCount = 0;
+                    totalAddition = -30;
+                }
+
+                let properties = '';
+
+                levelText.forEach(level => {
+                    let text = '• ' + level;
+                    properties += text + '\n';
+                    let textWidth = pdfDoc.getWidthOfText(text);
+
+                    if (textWidth > 390) { // pokud je text na více řádků, zvětšíme box
+                        additionToBorder += 15;
+                    }
+                });
+
+                const scale = 75; // scale mění mezeru mezi jednotlivými boxy
+
+                pdfDoc.addBorder(70, height + 5 - 7 * fontSize - ((itemCount + 1) * scale) - totalAddition - additionToBorder, 450, 60 + additionToBorder, 0, { r: 0.75, g: 0.2, b: 0.2 });
+                pdfDoc.addBorder(70, height + 43 - 7 * fontSize - ((itemCount + 1) * scale) - totalAddition, 450, 22, 1, { r: 0.8313, g: 0.901, b: 0.6313 });
+
+                pdfDoc.addText(item.title_short, 80, height - 10 * fontSize - (itemCount * scale) - totalAddition + 5, true);
+                pdfDoc.addText(`${item.selected}`, 90, height - 10 * fontSize - (itemCount * scale) - 22 - totalAddition + 5, true);
+                pdfDoc.addText(`úroveň`, 80, height - 10 * fontSize - (itemCount * scale) - 36 - totalAddition + 5, true);
+
+                pdfDoc.addText(properties, 130, height - 10 * fontSize - (itemCount * scale) - 22 - totalAddition + 5, false, null, null, 390);
+
+                totalAddition += additionToBorder;
+                itemCount++;
+            });
+
+            let pdfLink = await pdfDoc.getUrl();
+            let a = document.createElement('a');
+
+            a.href = pdfLink;
+            a.download = `sebepoznani-${username}-${date}.pdf`;
+            a.click();
+            window.URL.revokeObjectURL(pdfLink);
+        }
+
+        const deleteRecordClick = () => {
+            $store.dispatch('clearState');
+            $f7.views.main.router.navigate('/');
+        }
+
+        $on('pageInit', (e, page) => {
+            const self = this;
+            $f7.setSelectedMenuItem('selfknowledge');
+
+            $store.dispatch('getUser');
+            username = $store.getters.user.value;
+
+            if ($f7route.params.date) {
+                let date = parseInt($f7route.params.date);
+                setTest(date);
+                prevTest = $store.getters.questionGroup.value.items;
+                prevTestDate = parseInt($f7route.params.date);
+            }
+
+            if ($f7route.params.historyDate) {
+                let date = parseInt($f7route.params.historyDate);
+                setTest(date);
+            } else {
+                $f7.getTest();
+            }
+
+            latestTest = $store.getters.questionGroup.value;
+
+            function setTest(date) {
+                let dateObj = new Date(date);
+
+                if (!$f7.testExists(dateObj)) {
+                    $f7.views.main.router.navigate('/');
+                }
+                $f7.getTest(dateObj);
+            }
+            $update(() => {
+                const legendTooltip = $f7.tooltip.create({
+                    targetEl: '.legend-tooltip',
+                    trigger: 'click',
+                    cssClass: 'selfknowledge-legend-tooltip',
+                    text: `<div><img alt="Aktuální kompetence" src="/static/images/bullet-blue.svg" /> \
+                       <span>Aktuální kompetence</span> </div>\
+                       <div><img alt="Kompetence z ${$f7.getFriendlyDate(latestTest.date)}" src="/static/images/bullet-red.svg" /> \
+                       <span>Kompetence z ${$f7.getFriendlyDate(latestTest.date)}</span></div>`,
+                });
+            });
+        })
+
+        return $render;
+    };
+</script>

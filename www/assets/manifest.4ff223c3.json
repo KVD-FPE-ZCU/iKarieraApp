@@ -1,0 +1,51 @@
+{
+    "name": "Karierní poradenství - průvodce kariérou",
+    "short_name": "Průvodce kariérou",
+    "description": "Pomocník Vašeho sebepoznání a karierního rozvoje.",
+    "lang": "cs-CZ",
+    "author": "KVD FPE Západočeská univerzita v Plzni",
+    "version": "1.0.8",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#364BB3",
+    "theme_color": "#364BB3",
+    "prefer_related_applications": false,
+    "related_applicationsNE": [
+        {
+            "platform": "play",
+            "id": "cz.zcu.kvd.poradenstvi"
+        }
+    ],
+    "icons": [
+        {
+            "src": "/icons/128x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/152x152.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
